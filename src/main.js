@@ -3,14 +3,14 @@ const path = require('path')
 
 const createWindow = () => {
     const win = new BrowserWindow({
-        width: 800,
+        width: 400,
         height: 600,
         frame: false,
         webPreferences: {
-            preload: path.join(__dirname, 'preload.js')
+            preload: path.join(__dirname, 'preload.js'),
+            webSecurity: false
         }
     })
-
 
     win.loadFile(path.join(__dirname, '../views/index.html'))
 }
@@ -36,3 +36,5 @@ app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') app.quit()
 })
 
+// fixes cross origin error
+app.commandLine.appendSwitch('disable-site-isolation-trials')

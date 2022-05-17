@@ -1,14 +1,56 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../style.css">
-    <link rel="stylesheet" href="style.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../style.css" />
+    <script>
+    InjectCSS = () => {
+        let myiframe = document.getElementById("my-iframe");
+        let head = myiframe.contentWindow.document.head;
+        head.innerHTML += 
+        `<style>
+        div.option_area, div#header, div#footer, div#aside, div.component_socialplugin, div.tab_scroll_inner, div.section_suggestion, .section.section_etc{
+            display: none;
+        }
+
+        body {
+            background-color: #d5eded
+        }
+
+        .section {
+            padding-top: 10px;
+        }
+        
+        div#container {
+            padding: 5px;
+        }
+
+        div#content {
+            padding: 0px
+        }
+
+        .component_keyword {
+            padding: 10px 10px 30px 15px
+        }
+        
+        div#container, div#content {
+            width: auto;
+        }
+        </style>
+        `
+    }
+    </script>
     <title>Naver Korean Dictionary</title>
-</head>
-<body>
-   <iframe src="https://ko.dict.naver.com/#/search?query=%EC%B2%AD%EC%9B%90" frameborder="0"></iframe> 
-</body>
+  </head>
+  <body>
+    <iframe
+      src="https://ko.dict.naver.com/search.nhn?query=배&target=dic"
+      frameborder="0"
+      id="my-iframe"
+      onload="InjectCSS()"
+    >
+    </iframe>
+  </body>
 </html>
