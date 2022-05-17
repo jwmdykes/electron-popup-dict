@@ -1,0 +1,14 @@
+{
+  "name": "electron-popup-dict",
+  "version": "1.0.0",
+  "description": "popup dictionary make in electron",
+  "main": "src/main.js",
+  "author": "ulazy1 <ulazy1@github.com>",
+  "license": "MIT",
+  "scripts": {
+    "start": "electron ."
+  },
+  "devDependencies": {
+    "electron": "^18.2.3"
+  }
+}
