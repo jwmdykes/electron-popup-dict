@@ -27,6 +27,7 @@ const createWindow = () => {
       webSecurity: false,
     },
   });
+  win.hide();
 
   // settup callbacks hooks from python
   setupPythonShellCallbacks(win, app);
