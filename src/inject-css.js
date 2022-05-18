@@ -61,13 +61,15 @@ ipcRenderer.on('change-iframe', (event, store) => {
   ifrm.setAttribute('src', url);
   ifrm.setAttribute('frameborder', '0');
   ifrm.setAttribute('id', 'my-iframe');
+  ifrm.setAttribute('scrolling', 'yes');
 
   // remove existing iframe
   myiframe = document.getElementById('my-iframe');
   myiframe.remove();
 
   // add new iframe to dom
-  document.body.appendChild(ifrm);
+  const ifrmContainer = document.getElementById('iframe-container');
+  ifrmContainer.appendChild(ifrm);
   ifrm.contentWindow.addEventListener(
     'DOMContentLoaded',
     (e) => {
