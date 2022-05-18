@@ -1,20 +1,20 @@
 const { PythonShell } = require('python-shell')
 const path = require('path')
-let pyshell = new PythonShell(path.join(__dirname, 'py/pyshell.py'));
+let mousePosShell = new PythonShell(path.join(__dirname, 'py/getMousePos.py'));
+let textShell = new PythonShell(path.join(__dirname, 'py/getText.py'));
 
 const getMousePos = (callback) => {
-    pyshell.send('getMousePos')
+    mousePosShell.send('getMousePos')
 
-    pyshell.on('message', (message) => {
+    mousePosShell.on('message', (message) => {
         callback(JSON.parse(message))
     })
 }
 
 const getText = (callback) => {
-    pyshell.send('getText')
-    console.log("GOIN")
+    textShell.send('getText')
 
-    pyshell.on('message', (message => {
+    textShell.on('message', (message => {
         callback(JSON.parse(message))
     }))
 }

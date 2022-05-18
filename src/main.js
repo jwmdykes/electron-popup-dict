@@ -1,6 +1,8 @@
 const { app, BrowserWindow} = require('electron')
 const path = require('path')
 
+const settings = require('./settings')
+
 process.on('uncaughtException', (error) => {
     console.log(error)
     app.quit()
@@ -11,20 +13,23 @@ const { registerHotkeys } = require('./hotkeys.js')
 
 const createWindow = () => {
     const win = new BrowserWindow({
-        width: 400,
-        height: 600,
+        width: settings.screen.width,
+        height: settings.screen.height,
         frame: false,
+        resizable: false,
         webPreferences: {
-            preload: path.join(__dirname, 'preload.js'),
+            preload: path.join(__dirname, 'inject-css.js'),
             webSecurity: false
-        }
+        },
     })
 
-    win.loadFile(path.join(__dirname, '../views/index.html'))
+    // win.setAlwaysOnTop(true)
     // hide window when it goes out of focus
     win.on('blur', () => {
-        win.hide()
+        win.minimize()
     })
+
+    win.loadFile(path.join(__dirname, '../views/naver/index.html'))
     return win
 }
 
