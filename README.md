@@ -1,2 +1,2 @@
 # electron-popup-dict
- popup dictionary make in electron
+ popup dictionary made in electron
