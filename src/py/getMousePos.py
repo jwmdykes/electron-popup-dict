@@ -8,10 +8,9 @@ while True:
     inp = input()
     if inp == "getMousePos":
         try:
-            x,y = pyautogui.position()
+            x, y = pyautogui.position()
             mousePos['x'] = x
             mousePos['y'] = y
         except:
             pass
         print(json.dumps(mousePos))
-
