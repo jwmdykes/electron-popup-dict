@@ -13,8 +13,8 @@ const { registerHotkeys } = require('./hotkeys.js')
 
 const createWindow = () => {
     const win = new BrowserWindow({
-        width: settings.window.width,
-        height: settings.window.height,
+        width: settings.windowSize.width,
+        height: settings.windowSize.height,
         frame: false,
         resizable: false,
         webPreferences: {

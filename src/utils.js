@@ -1,5 +1,3 @@
-const settings = require('./settings.js')
-
 // show window helper to fix windows 10 issues with focus
 const showWindow = (win, app) =>  {
     win.show()
@@ -18,13 +16,13 @@ const showWindow = (win, app) =>  {
 }
 
 // get actual position of window from mouse position (uses size of window and monitor information to calculate appropriate position)
-const getWindowPosition = (mousePos) => {
+const getWindowPosition = (mousePos, bounds, window) => {
     x = mousePos.x
     y = mousePos.y
 
     let cur_mon;
-    for (const [key, value] of Object.entries(settings.monitors)) {
-        if ((value.x0 <= x) && (x <= value.x1) && (value.y0 <= y) && (y <= value.y1)) {
+    for (const [key, value] of Object.entries(bounds)) {
+        if ((value.x <= x) && (x <= value.x1) && (value.y <= y) && (y <= value.y1)) {
             cur_mon = value
             break
         }
@@ -34,8 +32,8 @@ const getWindowPosition = (mousePos) => {
         return {x: x, y: y}
     }
 
-    const size_x = settings.window.width
-    const size_y = settings.window.height
+    const size_x = window.width
+    const size_y = window.height
 
     if (x + size_x > cur_mon.x1) {
         x -= size_x
