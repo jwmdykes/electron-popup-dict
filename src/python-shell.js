@@ -50,6 +50,8 @@ let setupPythonShellCallbacks = (win, app) => {
         text: text.text,
       });
       getMousePos();
+    } else {
+      win.hide();
     }
   });
   setMousePosCallback((mousePos) => {
