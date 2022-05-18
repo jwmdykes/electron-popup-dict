@@ -2,6 +2,7 @@ const settings = require('./settings.js')
 
 // show window helper to fix windows 10 issues with focus
 const showWindow = (win, app) =>  {
+    win.show()
     win.setAlwaysOnTop(true);
     if (win.isMaximized) {
         win.mainWindow?.maximize();

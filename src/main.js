@@ -26,7 +26,8 @@ const createWindow = () => {
     // win.setAlwaysOnTop(true)
     // hide window when it goes out of focus
     win.on('blur', () => {
-        win.minimize()
+        // win.minimize()
+        win.hide()
     })
 
     win.loadFile(path.join(__dirname, '../views/naver/index.html'))
