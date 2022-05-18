@@ -1,5 +1,5 @@
 module.exports = {
-    screen: {
+    window: {
         width: 500,
         height: 550,
     },

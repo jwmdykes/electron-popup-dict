@@ -24,7 +24,6 @@ const getWindowPosition = (mousePos) => {
 
     let cur_mon;
     for (const [key, value] of Object.entries(settings.monitors)) {
-        console.log(key, value)
         if ((value.x0 <= x) && (x <= value.x1) && (value.y0 <= y) && (y <= value.y1)) {
             cur_mon = value
             break
@@ -35,8 +34,8 @@ const getWindowPosition = (mousePos) => {
         return {x: x, y: y}
     }
 
-    const size_x = settings.screen.width
-    const size_y = settings.screen.height
+    const size_x = settings.window.width
+    const size_y = settings.window.height
 
     if (x + size_x > cur_mon.x1) {
         x -= size_x

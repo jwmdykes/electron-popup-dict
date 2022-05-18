@@ -2,20 +2,24 @@ const { globalShortcut} = require('electron')
 const { getMousePos, getText } = require('./python-shell.js')
 const { getWindowPosition, showWindow } = require("./utils")
 
+let PreviousText = {text: ''}
+
 const registerHotkeys = (win, app) => {
     globalShortcut.register('esc', () => {
-        console.log("esc")
+        // console.log("esc")
         app.quit()
     })
 
     globalShortcut.register('CommandOrControl+D', () => {
         // console.log("ctrl+d")
         getText((text) => {
-            // console.log(text)
-            win.webContents.send('change-iframe', {
-                url: "https://ko.dict.naver.com/search.nhn?query=<<word>>&target=dic",
-                text: text.text
-            })
+            if (text.text !== '' && text.text !== PreviousText.text) {
+                win.webContents.send('change-iframe', {
+                    url: "https://ko.dict.naver.com/search.nhn?query=<<word>>&target=dic",
+                    text: text.text
+                })
+            }
+            PreviousText = text
         })
         getMousePos((mousePos) => {
             // console.log(`MOUSEPOS: ${JSON.stringify(mousePos)}`)

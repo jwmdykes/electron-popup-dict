@@ -13,8 +13,8 @@ const { registerHotkeys } = require('./hotkeys.js')
 
 const createWindow = () => {
     const win = new BrowserWindow({
-        width: settings.screen.width,
-        height: settings.screen.height,
+        width: settings.window.width,
+        height: settings.window.height,
         frame: false,
         resizable: false,
         webPreferences: {
@@ -23,10 +23,8 @@ const createWindow = () => {
         },
     })
 
-    // win.setAlwaysOnTop(true)
     // hide window when it goes out of focus
     win.on('blur', () => {
-        // win.minimize()
         win.hide()
     })
 
