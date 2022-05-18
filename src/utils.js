@@ -15,6 +15,19 @@ const showWindow = (win, app) => {
   });
 };
 
+const clickInBound = (point, bounds) => {
+  if (
+    point.x >= bounds.x &&
+    point.x <= bounds.x + bounds.width &&
+    point.y >= bounds.y &&
+    point.y <= bounds.y + bounds.height
+  ) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
 // get actual position of window from mouse position (uses size of window and monitor information to calculate appropriate position)
 const getWindowPosition = (mousePos, bounds, window) => {
   x = mousePos.x;
@@ -49,4 +62,5 @@ const getWindowPosition = (mousePos, bounds, window) => {
 module.exports = {
   getWindowPosition: getWindowPosition,
   showWindow: showWindow,
+  clickInBound: clickInBound,
 };

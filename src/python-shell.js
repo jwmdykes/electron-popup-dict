@@ -1,4 +1,4 @@
-const { getWindowPosition, showWindow } = require('./utils');
+const { getWindowPosition, showWindow, clickInBound } = require('./utils');
 const { windowSize, getMonitors } = require('./settings');
 const { PythonShell } = require('python-shell');
 const path = require('path');
@@ -17,8 +17,23 @@ const setMousePosCallback = (callback) => {
   });
 };
 
-const getMousePos = (callback) => {
+const getMousePos = () => {
   mousePosShell.send('getMousePos');
+};
+
+const oneShotMousePos = () => {
+  // wrap it in a promise, and `await` the result
+  const result = new Promise((resolve, reject) => {
+    PythonShell.run(
+      path.join(__dirname, 'py/oneShotMousePos.py'),
+      null,
+      (err, results) => {
+        if (err) return reject(err);
+        return resolve(results);
+      }
+    );
+  });
+  return result;
 };
 
 PreviousText = { text: '' };
@@ -42,42 +57,67 @@ const setMouseClickCallback = (callback) => {
   });
 };
 
-let setupPythonShellCallbacks = (win, app) => {
-  setTextCallback((text, PreviousText) => {
-    if (text.text !== '' && text.text !== PreviousText.text) {
-      win.webContents.send('change-iframe', {
-        url: 'https://ko.dict.naver.com/search.nhn?query=<<word>>&target=dic',
-        text: text.text,
-      });
-      getMousePos();
-    } else {
-      win.hide();
-    }
-  });
-  setMousePosCallback((mousePos) => {
-    // console.log(`MOUSEPOS: ${JSON.stringify(mousePos)}`)
-    getMonitors(app)
-      .then((mons) => {
-        // console.log(JSON.stringify(mons))
-        const bounds = [];
-        for (const mon of mons) {
-          mon.bounds.x1 = mon.bounds.x + mon.bounds.width;
-          mon.bounds.y1 = mon.bounds.y + mon.bounds.height;
-          bounds.push(mon.bounds);
+const defaultTextCallback = (win, app, text, PreviousText) => {
+  const winVisible = win.isVisible();
+  const bounds = win.getBounds();
+  console.log(bounds);
+  oneShotMousePos() // check if the mouse is already in the window
+    .then((res) => {
+      const mouseInWindow = clickInBound(JSON.parse(res), bounds);
+      if (winVisible && !mouseInWindow) {
+        win.hide();
+        return false;
+      } else if (winVisible) {
+        return false;
+      } else {
+        return true;
+      }
+    })
+    .then((keepGoing) => {
+      if (keepGoing) {
+        if (text.text !== '' && text.text !== PreviousText.text) {
+          win.webContents.send('change-iframe', {
+            url: 'https://ko.dict.naver.com/search.nhn?query=<<word>>&target=dic',
+            text: text.text,
+          });
+          getMousePos(); // get mouse position and do the mouse position callback
         }
-        return bounds;
-      })
-      .then((bounds) => {
-        const winPos = getWindowPosition(mousePos, bounds, windowSize);
-        return winPos;
-      })
-      .then((winPos) => {
-        win.setPosition(winPos.x, winPos.y);
-      })
-      .then(() => {
-        showWindow(win, app);
-      });
-  });
+      }
+    });
+};
+
+const defaultMousePosCallback = (win, app, mousePos) => {
+  // console.log(`MOUSEPOS: ${JSON.stringify(mousePos)}`)
+  getMonitors(app)
+    .then((mons) => {
+      // console.log(JSON.stringify(mons))
+      const bounds = [];
+      for (const mon of mons) {
+        mon.bounds.x1 = mon.bounds.x + mon.bounds.width;
+        mon.bounds.y1 = mon.bounds.y + mon.bounds.height;
+        bounds.push(mon.bounds);
+      }
+      return bounds;
+    })
+    .then((bounds) => {
+      const winPos = getWindowPosition(mousePos, bounds, windowSize);
+      return winPos;
+    })
+    .then((winPos) => {
+      win.setPosition(winPos.x, winPos.y);
+    })
+    .then(() => {
+      showWindow(win, app);
+    });
+};
+
+let setupPythonShellCallbacks = (win, app) => {
+  setTextCallback((text, PreviousText) =>
+    defaultTextCallback(win, app, text, PreviousText)
+  );
+  setMousePosCallback((mousePos) =>
+    defaultMousePosCallback(win, app, mousePos)
+  );
 };
 
 module.exports = {
