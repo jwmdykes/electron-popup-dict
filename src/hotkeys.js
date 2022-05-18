@@ -5,7 +5,7 @@ const { setMouseClickCallback, getMousePos } = require('./python-shell');
 const registerHotkeys = (win, app) => {
   globalShortcut.register('esc', () => {
     // console.log("esc")
-    app.quit();
+    // app.quit();
   });
 
   globalShortcut.register('CommandOrControl+D', () => {

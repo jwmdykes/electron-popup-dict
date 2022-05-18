@@ -12,6 +12,7 @@
     "electron": "^18.2.3"
   },
   "dependencies": {
+    "node-tesseract-ocr": "^2.2.1",
     "python-shell": "^3.0.1"
   }
 }

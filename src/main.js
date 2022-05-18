@@ -27,7 +27,7 @@ const createWindow = () => {
       webSecurity: false,
     },
   });
-  win.openDevTools({ mode: 'undocked' });
+  // win.openDevTools({ mode: 'undocked' });
   win.hide();
 
   // settup callbacks hooks from python
