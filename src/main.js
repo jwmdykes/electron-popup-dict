@@ -1,5 +1,7 @@
-const { app, BrowserWindow, globalShortcut } = require('electron')
+const { app, BrowserWindow} = require('electron')
 const path = require('path')
+
+const { registerHotkeys } = require('./hotkeys.js')
 
 const createWindow = () => {
     const win = new BrowserWindow({
@@ -13,19 +15,17 @@ const createWindow = () => {
     })
 
     win.loadFile(path.join(__dirname, '../views/index.html'))
-}
-
-const registerHotkeys = () => {
-    globalShortcut.register('esc', () => {
-        console.log("esc")
-        app.quit()
+    // hide window when it goes out of focus
+    win.on('blur', () => {
+        win.hide()
     })
+    return win
 }
 
 app.whenReady().then(() => {
-    registerHotkeys()
-}).then(() => {
-    createWindow()
+    return createWindow()
+}).then((win) => {
+    registerHotkeys(win, app)
 })
 
 app.on('activate', () => {
