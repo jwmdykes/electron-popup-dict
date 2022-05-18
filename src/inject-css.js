@@ -67,7 +67,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
 const changeIframe = (text, url) => {
   const searchBarText = document.getElementById('SearchBarText');
-  searchBarText.value = text;
+  // searchBarText.value = text;
+  searchBarText.value = '';
+  searchBarText.focus();
 
   text = encodeURIComponent(text);
   url = url.replace('<<word>>', text);
@@ -97,6 +99,12 @@ const changeIframe = (text, url) => {
 
 ipcRenderer.on('change-iframe', (event, store) => {
   changeIframe(store.text, store.url);
+});
+
+ipcRenderer.on('focus-search', (event, store) => {
+  const searchBarText = document.getElementById('SearchBarText');
+  searchBarText.value = '';
+  searchBarText.focus();
 });
 
 contextBridge.exposeInMainWorld('api', {
