@@ -41,6 +41,17 @@
         </style>
         `
     }
+    // Inject CSS on DOMContentLoaded of iframe.
+    const IFrameOnLoad = () => {
+      let myiframe = document.getElementById("my-iframe")
+      myiframe.contentWindow.addEventListener('DOMContentLoaded', (e) => {
+        console.log("GOING!!!")
+        InjectCSS()
+      }, true)
+    }
+    document.addEventListener('DOMContentLoaded', () => {
+      IFrameOnLoad()
+    })
     </script>
     <title>Naver Korean Dictionary</title>
   </head>
@@ -49,7 +60,6 @@
       src="https://ko.dict.naver.com/search.nhn?query=배&target=dic"
       frameborder="0"
       id="my-iframe"
-      onload="InjectCSS()"
     >
     </iframe>
   </body>
