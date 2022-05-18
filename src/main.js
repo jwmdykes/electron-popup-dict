@@ -4,15 +4,17 @@ const path = require('path');
 /////////////////////////////////////////////
 // For debugging, print out errors to console
 process.on('uncaughtException', (error) => {
-  console.log(error);
-  app.quit();
-  process.exit();
+  console.error(error.stack);
+});
+process.on('warning', (error) => {
+  console.warn(error.stack);
 });
 // For debugging, print out errors to console
 /////////////////////////////////////////////
 
 const settings = require('./settings');
 const { registerHotkeys } = require('./hotkeys.js');
+const { setupPythonShellCallbacks } = require('./python-shell');
 
 const createWindow = () => {
   const win = new BrowserWindow({
@@ -25,6 +27,9 @@ const createWindow = () => {
       webSecurity: false,
     },
   });
+
+  // settup callbacks hooks from python
+  setupPythonShellCallbacks(win, app);
 
   // hide window when it goes out of focus
   win.on('blur', () => {
