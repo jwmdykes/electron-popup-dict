@@ -124,4 +124,5 @@ module.exports = {
   getText: getText,
   setMouseClickCallback: setMouseClickCallback,
   setupPythonShellCallbacks: setupPythonShellCallbacks,
+  oneShotMousePos: oneShotMousePos,
 };
