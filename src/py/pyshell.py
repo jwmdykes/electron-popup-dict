@@ -1,13 +1,26 @@
 import json
+import time
 import pyautogui
-d = {'x': 0, 'y': 0}
+import pyperclip
+
+mousePos = {'x': 0, 'y': 0}
+text = {'text': ''}
+
 while True:
     inp = input()
     if inp == "getMousePos":
         try:
             x,y = pyautogui.position()
-            d['x'] = x
-            d['y'] = y
+            mousePos['x'] = x
+            mousePos['y'] = y
         except:
             pass
-        print(json.dumps(d))
+        print(json.dumps(mousePos))
+    elif inp == "getText":
+        try:
+            pyautogui.hotkey('ctrl', 'c')
+            time.sleep(0.01)
+            text['text'] = pyperclip.paste()
+        except:
+            pass
+        print(json.dumps(text))

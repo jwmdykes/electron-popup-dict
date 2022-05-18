@@ -1,6 +1,12 @@
 const { app, BrowserWindow} = require('electron')
 const path = require('path')
 
+process.on('uncaughtException', (error) => {
+    console.log(error)
+    app.quit()
+    process.exit()
+})
+
 const { registerHotkeys } = require('./hotkeys.js')
 
 const createWindow = () => {

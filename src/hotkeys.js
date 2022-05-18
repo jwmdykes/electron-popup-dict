@@ -1,5 +1,5 @@
 const { globalShortcut } = require('electron')
-const { getMousePos } = require('./python-shell.js')
+const { getMousePos, getText } = require('./python-shell.js')
 
 const registerHotkeys = (win, app) => {
     globalShortcut.register('esc', () => {
@@ -9,6 +9,10 @@ const registerHotkeys = (win, app) => {
 
     globalShortcut.register('CommandOrControl+D', () => {
         console.log("ctrl+d")
+        getText((text) => {
+            console.log("RUNNING")
+            console.log(text)
+        })
         getMousePos((mousePos) => {
             win.setPosition(mousePos.x, mousePos.y)
             win.show()

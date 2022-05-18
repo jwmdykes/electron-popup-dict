@@ -10,6 +10,16 @@ const getMousePos = (callback) => {
     })
 }
 
+const getText = (callback) => {
+    pyshell.send('getText')
+    console.log("GOIN")
+
+    pyshell.on('message', (message => {
+        callback(JSON.parse(message))
+    }))
+}
+
 module.exports = {
     getMousePos: getMousePos,
+    getText: getText
 }
