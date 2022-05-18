@@ -5,14 +5,31 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="../style.css" />
-    <script></script>
+    <script>
+      onSubmit = () => {
+        const text = document.getElementById('SearchBarText').value;
+        const url =
+          'https://ko.dict.naver.com/search.nhn?query=<<word>>&target=dic';
+        window.api.changeIframe(text, url);
+      };
+    </script>
+    <script>
+      document.addEventListener('keypress', (event) => {
+        if (event.key === 'Enter') {
+          event.preventDefault();
+          document.getElementById('SearchBarButton').click();
+        }
+      });
+    </script>
     <title>Naver Korean Dictionary</title>
   </head>
   <body>
     <div class="container">
       <div id="search-container">
-        <input type="text" name="Search" />
-        <button type="submit"></button>
+        <input type="text" name="Search" id="SearchBarText" />
+        <button type="submit" onclick="onSubmit()" id="SearchBarButton">
+          <img src="./1024px-Search_Icon.svg.png" alt="submit" />
+        </button>
       </div>
       <div id="iframe-container">
         <iframe

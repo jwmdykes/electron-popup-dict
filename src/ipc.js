@@ -1,5 +1,5 @@
 // In main process.
-const { ipcMain } = require('electron');
+const { ipcMain, contextBridge } = require('electron');
 ipcMain.on('asynchronous-message', (event, arg) => {
   console.log(arg); // prints "ping"
   event.reply('asynchronous-reply', 'pong');

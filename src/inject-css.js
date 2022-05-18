@@ -1,4 +1,4 @@
-const { ipcRenderer } = require('electron');
+const { contextBridge, ipcRenderer } = require('electron');
 
 const InjectCSS = () => {
   let myiframe = document.getElementById('my-iframe');
@@ -65,9 +65,11 @@ document.addEventListener('DOMContentLoaded', () => {
   IFrameOnLoad();
 });
 
-ipcRenderer.on('change-iframe', (event, store) => {
-  text = encodeURIComponent(store.text);
-  url = store.url;
+const changeIframe = (text, url) => {
+  const searchBarText = document.getElementById('SearchBarText');
+  searchBarText.value = text;
+
+  text = encodeURIComponent(text);
   url = url.replace('<<word>>', text);
 
   // create new iframe
@@ -91,4 +93,12 @@ ipcRenderer.on('change-iframe', (event, store) => {
     },
     true
   );
+};
+
+ipcRenderer.on('change-iframe', (event, store) => {
+  changeIframe(store.text, store.url);
+});
+
+contextBridge.exposeInMainWorld('api', {
+  changeIframe: changeIframe,
 });

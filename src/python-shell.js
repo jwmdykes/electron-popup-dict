@@ -60,7 +60,6 @@ const setMouseClickCallback = (callback) => {
 const defaultTextCallback = (win, app, text, PreviousText) => {
   const winVisible = win.isVisible();
   const bounds = win.getBounds();
-  console.log(bounds);
   oneShotMousePos() // check if the mouse is already in the window
     .then((res) => {
       const mouseInWindow = clickInBound(JSON.parse(res), bounds);
