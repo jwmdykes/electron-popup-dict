@@ -18,22 +18,8 @@ const setMousePosCallback = (callback) => {
 };
 
 const getMousePos = () => {
+  console.log('getting mousePos');
   mousePosShell.send('getMousePos');
-};
-
-const oneShotMousePos = () => {
-  // wrap it in a promise, and `await` the result
-  const result = new Promise((resolve, reject) => {
-    PythonShell.run(
-      path.join(__dirname, 'py/oneShotMousePos.py'),
-      null,
-      (err, results) => {
-        if (err) return reject(err);
-        return resolve(results);
-      }
-    );
-  });
-  return result;
 };
 
 PreviousText = { text: '' };
@@ -49,7 +35,10 @@ const getText = (callback) => {
   textShell.send('getText');
 };
 
+let currentMouseClickCallback = () => {};
 const setMouseClickCallback = (callback) => {
+  currentMouseClickCallback = callback;
+
   mouseClickShell.send('go');
 
   mouseClickShell.on('message', (message) => {
@@ -61,29 +50,26 @@ const defaultTextCallback = (win, app, text, PreviousText) => {
   console.log(`Got text: ${text.text}`);
   const winVisible = win.isVisible();
   const bounds = win.getBounds();
-  oneShotMousePos() // check if the mouse is already in the window
-    .then((res) => {
-      console.log(`oneShotMousePos result: ${res}`);
-      const mouseInWindow = clickInBound(JSON.parse(res), bounds);
-      if (winVisible && !mouseInWindow) {
-        win.hide();
-        return false;
+
+  const oldMouseClickCallback = currentMouseClickCallback;
+  setMousePosCallback((res) => {
+    // console.log(`MousePos result: ${JSON.stringify(res)}`);
+    const mouseInWindow = clickInBound(res, bounds);
+    if (winVisible && !mouseInWindow) {
+      win.hide();
+    } else {
+      if (text.text !== '') {
+        win.webContents.send('change-iframe', {
+          url: `https://ko.dict.naver.com/search.nhn?query=<<word>>&target=dic`,
+          text: text.text,
+        });
       }
-      return true;
-    })
-    .then((keepGoing) => {
-      console.log(`keep going: ${keepGoing}`);
-      if (keepGoing) {
-        // if (text.text !== '' && text.text !== PreviousText.text) {
-        if (text.text !== '') {
-          win.webContents.send('change-iframe', {
-            url: `https://ko.dict.naver.com/search.nhn?query=<<word>>&target=dic`,
-            text: text.text,
-          });
-          getMousePos(); // get mouse position and do the mouse position callback
-        }
-      }
-    });
+    }
+  });
+
+  getMousePos(); // get mouse position and do the mouse position callback
+  console.log('REVERTING TO OLD CALLBACK!');
+  setMousePosCallback(oldMouseClickCallback);
 };
 
 const defaultMousePosCallback = (win, app, mousePos) => {
@@ -125,5 +111,4 @@ module.exports = {
   getText: getText,
   setMouseClickCallback: setMouseClickCallback,
   setupPythonShellCallbacks: setupPythonShellCallbacks,
-  oneShotMousePos: oneShotMousePos,
 };

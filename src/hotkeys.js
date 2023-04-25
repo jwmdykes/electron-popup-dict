@@ -10,9 +10,8 @@ const registerHotkeys = (win, app) => {
 
   globalShortcut.register('CommandOrControl+D', () => {
     // console.log("ctrl+d")
-    getMousePos(); // show window at mouse cursor
-    win.webContents.send('focus-search');
     query(win, app);
+    win.webContents.send('focus-search');
   });
 
   // setMouseClickCallback(() => {
