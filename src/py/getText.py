@@ -6,8 +6,10 @@ import platform
 
 if (platform.system() == 'Darwin'):
     modifier = 'command'
+    interval = 0.01
 else:
     modifier = 'ctrl'
+    interval = 0
 
 
 text = {'text': ''}
@@ -16,8 +18,8 @@ while True:
     inp = input()
     if inp == "getText":
         try:
-            pyautogui.hotkey(modifier, 'c')
-            time.sleep(0.01)
+            with pyautogui.hold(['command']):
+                pyautogui.press('c')
             text['text'] = pyperclip.paste()
         except:
             pass

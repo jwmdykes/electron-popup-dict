@@ -66,6 +66,8 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 const changeIframe = (text, url) => {
+  console.log(`changing iframe with text: ${text}`);
+
   const searchBarText = document.getElementById('SearchBarText');
   // searchBarText.value = text;
   searchBarText.value = '';

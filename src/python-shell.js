@@ -58,25 +58,26 @@ const setMouseClickCallback = (callback) => {
 };
 
 const defaultTextCallback = (win, app, text, PreviousText) => {
+  console.log(`Got text: ${text.text}`);
   const winVisible = win.isVisible();
   const bounds = win.getBounds();
   oneShotMousePos() // check if the mouse is already in the window
     .then((res) => {
+      console.log(`oneShotMousePos result: ${res}`);
       const mouseInWindow = clickInBound(JSON.parse(res), bounds);
       if (winVisible && !mouseInWindow) {
         win.hide();
         return false;
-      } else if (winVisible) {
-        return false;
-      } else {
-        return true;
       }
+      return true;
     })
     .then((keepGoing) => {
+      console.log(`keep going: ${keepGoing}`);
       if (keepGoing) {
-        if (text.text !== '' && text.text !== PreviousText.text) {
+        // if (text.text !== '' && text.text !== PreviousText.text) {
+        if (text.text !== '') {
           win.webContents.send('change-iframe', {
-            url: 'https://ko.dict.naver.com/search.nhn?query=<<word>>&target=dic',
+            url: `https://ko.dict.naver.com/search.nhn?query=<<word>>&target=dic`,
             text: text.text,
           });
           getMousePos(); // get mouse position and do the mouse position callback
@@ -110,7 +111,7 @@ const defaultMousePosCallback = (win, app, mousePos) => {
     });
 };
 
-let setupPythonShellCallbacks = (win, app) => {
+const setupPythonShellCallbacks = (win, app) => {
   setTextCallback((text, PreviousText) =>
     defaultTextCallback(win, app, text, PreviousText)
   );

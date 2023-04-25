@@ -12,11 +12,12 @@ const registerHotkeys = (win, app) => {
     // console.log("ctrl+d")
     getMousePos(); // show window at mouse cursor
     win.webContents.send('focus-search');
-  });
-
-  setMouseClickCallback(() => {
     query(win, app);
   });
+
+  // setMouseClickCallback(() => {
+  //   query(win, app);
+  // });
 };
 
 module.exports = {
