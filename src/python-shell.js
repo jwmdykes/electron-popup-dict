@@ -11,6 +11,18 @@ const mouseClickShell = new PythonShell(
   path.join(__dirname, 'py/sendMouseClick.py')
 );
 
+mousePosShell.on('stderr', function (stderr) {
+  console.error(stderr)
+});
+
+textShell.on('stderr', function (stderr) {
+  console.error(stderr);
+});
+
+mouseClickShell.on('stderr', function (stderr) {
+  console.error(stderr);
+});
+
 const setMousePosCallback = (callback) => {
   mousePosShell.on('message', (message) => {
     callback(JSON.parse(message));
@@ -32,6 +44,7 @@ const setTextCallback = (callback) => {
 };
 
 const getText = (callback) => {
+  console.log("Trying to get text!");
   textShell.send('getText');
 };
 
