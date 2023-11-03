@@ -20,6 +20,10 @@ while True:
         try:
             with pyautogui.hold(['command']):
                 pyautogui.press('c')
+            pyautogui.keyDown('ctrl')
+            pyautogui.keyDown('c')
+            pyautogui.keyUp('c')
+            pyautogui.keyUp('ctrl')
             text['text'] = pyperclip.paste()
         except:
             pass
