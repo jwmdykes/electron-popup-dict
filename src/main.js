@@ -1,4 +1,4 @@
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
 
 const settings = require('./settings');
@@ -15,15 +15,22 @@ const createWindow = async () => {
       preload: path.join(__dirname, 'preload.js'),
     },
   });
-  // win.openDevTools({ mode: 'undocked' });
+  win.openDevTools({ mode: 'undocked' });
   // win.hide();
 
   // hide window when it goes out of focus
-  win.on('blur', () => {
-    win.hide();
-  });
+  // win.on('blur', () => {
+  //   win.hide();
+  // });
 
-  await win.loadFile(path.join(__dirname, '../views/index.html'));
+  let count = 0
+  setInterval(() => {
+    win.webContents.send("count", count++)
+  }, 1000)
+
+  let viewURL = path.join(__dirname, '../views/index.html')
+  await win.loadFile(viewURL)
+
   return win
 };
 
@@ -59,3 +66,5 @@ app.on('activate', async () => {
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') app.quit();
 });
+
+ipcMain.handle('get-settings', () => settings)

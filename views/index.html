@@ -8,9 +8,7 @@
     <script>
       onSubmit = () => {
         const text = document.getElementById('SearchBarText').value;
-        const url =
-          'https://ko.dict.naver.com/search.nhn?query=<<word>>&target=dic';
-        window.api.changeIframe(text, url);
+        window.api.changeIframe(text);
       };
     </script>
     <script>

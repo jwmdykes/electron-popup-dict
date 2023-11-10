@@ -62,7 +62,6 @@ const getSelectedText = () => {
 
 const changeIFrameURL = (win, text) => {
   win.webContents.send('change-iframe', {
-    url: `https://ko.dict.naver.com/search.nhn?query=<<word>>&target=dic`,
     text: text,
   });
 }
