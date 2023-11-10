@@ -70,11 +70,17 @@ const changeIFrameURL = (win, text) => {
   });
 }
 
+getMonitors = (app) => {
+  return app.whenReady().then(() => {
+    return screen.getAllDisplays();
+  });
+};
+
 module.exports = {
   getWindowPosition: getWindowPosition,
   showWindow: showWindow,
   clickInBound: clickInBound,
   getMousePos: getMousePos,
   changeIFrameURL: changeIFrameURL,
-
+  getMonitors: getMonitors,
 };

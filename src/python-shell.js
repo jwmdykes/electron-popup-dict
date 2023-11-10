@@ -1,5 +1,5 @@
-const { getWindowPosition, showWindow, clickInBound, getMousePos, changeIFrameURL} = require('./utils');
-const { windowSize, getMonitors } = require('./settings');
+const { getMonitors, getWindowPosition, showWindow, clickInBound, getMousePos, changeIFrameURL} = require('./utils');
+const { windowSize } = require('./settings');
 const { PythonShell } = require('python-shell');
 const path = require('path');
 
