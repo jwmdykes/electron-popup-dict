@@ -24,10 +24,13 @@
   <body>
     <div class="container">
       <div id="search-container">
-        <label for="SearchBarText"></label><input type="text" name="Search" id="SearchBarText" />
-        <button type="submit" onclick="onSubmit()" id="SearchBarButton">
-          <img src="naver/1024px-Search_Icon.svg.png" alt="submit" />
-        </button>
+          <div style="width: 100%; margin-right: 10px">
+            <input type="text" name="Search" id="SearchBarText" />
+          </div>
+          <div>
+              <button type="submit" onclick="onSubmit()" id="SearchBarButton">
+              </button>
+          </div>
       </div>
       <div id="iframe-container">
         <iframe
