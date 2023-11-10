@@ -9,7 +9,7 @@
     "start": "electron ."
   },
   "devDependencies": {
-    "electron": "^18.2.3"
+    "electron": "^27.0.4"
   },
   "dependencies": {
     "node-tesseract-ocr": "^2.2.1",
