@@ -23,7 +23,7 @@ const createWindow = async () => {
     win.hide();
   });
 
-  await win.loadFile(path.join(__dirname, '../views/naver/index.html'));
+  await win.loadFile(path.join(__dirname, '../views/index.html'));
   return win
 };
 
