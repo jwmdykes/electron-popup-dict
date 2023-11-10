@@ -1,6 +1,6 @@
 const { contextBridge, ipcRenderer } = require('electron');
 
-const InjectCSS = () => {
+const Preload = () => {
   let iframe = document.getElementById('my-iframe');
   let head = iframe.contentWindow.document.head;
   head.innerHTML += `<style>
@@ -55,7 +55,7 @@ const IFrameOnLoad = () => {
   iframe.contentWindow.addEventListener(
     'DOMContentLoaded',
     () => {
-      InjectCSS();
+      Preload();
     },
     true
   );
@@ -91,7 +91,7 @@ const changeIframe = (text, url) => {
   new_iframe.contentWindow.addEventListener(
     'DOMContentLoaded',
     () => {
-      InjectCSS();
+      Preload();
     },
     true
   );

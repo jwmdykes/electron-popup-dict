@@ -1,5 +1,6 @@
 // show window helper to fix Windows 10 issues with focus
-const { screen } = require('electron')
+const { screen, clipboard } = require('electron')
+const {windowSize} = require("./settings");
 
 function getMousePos() {
   let mousePos = screen.getCursorScreenPoint();
@@ -23,14 +24,6 @@ const showWindow = (win, app) => {
   });
 };
 
-const clickInBound = (point, bounds) => {
-  return (
-    point.x >= bounds.x &&
-    point.x <= bounds.x + bounds.width &&
-    point.y >= bounds.y &&
-    point.y <= bounds.y + bounds.height
-  )
-};
 
 // get actual position of window from mouse position (uses size of window and monitor information to calculate appropriate position)
 const getWindowPosition = (mousePos, bounds, window) => {
@@ -63,6 +56,10 @@ const getWindowPosition = (mousePos, bounds, window) => {
   return { x: x, y: y };
 };
 
+const getSelectedText = () => {
+  return clipboard.readText('selection');
+}
+
 const changeIFrameURL = (win, text) => {
   win.webContents.send('change-iframe', {
     url: `https://ko.dict.naver.com/search.nhn?query=<<word>>&target=dic`,
@@ -76,11 +73,34 @@ getMonitors = (app) => {
   });
 };
 
+const MoveWindowToCursor = async (win, app, mousePos) => {
+  const mons = await getMonitors(app)
+
+  const bounds = [];
+  for (const mon of mons) {
+    mon.bounds.x1 = mon.bounds.x + mon.bounds.width;
+    mon.bounds.y1 = mon.bounds.y + mon.bounds.height;
+    bounds.push(mon.bounds);
+  }
+
+  const winPos = getWindowPosition(mousePos, bounds, windowSize);
+
+  win.setPosition(winPos.x, winPos.y);
+}
+
+const dictQuery = async (win, app, text) => {
+  const mousePos = getMousePos()
+
+  if (text !== '') {
+    changeIFrameURL(win, text)
+  }
+
+  await MoveWindowToCursor(win, app, mousePos)
+  showWindow(win, app)
+};
+
+
 module.exports = {
-  getWindowPosition: getWindowPosition,
-  showWindow: showWindow,
-  clickInBound: clickInBound,
-  getMousePos: getMousePos,
-  changeIFrameURL: changeIFrameURL,
-  getMonitors: getMonitors,
+    getSelectedText: getSelectedText,
+    dictQuery: dictQuery,
 };
