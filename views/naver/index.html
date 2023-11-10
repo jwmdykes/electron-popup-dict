@@ -26,7 +26,7 @@
   <body>
     <div class="container">
       <div id="search-container">
-        <input type="text" name="Search" id="SearchBarText" />
+        <label for="SearchBarText"></label><input type="text" name="Search" id="SearchBarText" />
         <button type="submit" onclick="onSubmit()" id="SearchBarButton">
           <img src="./1024px-Search_Icon.svg.png" alt="submit" />
         </button>
@@ -34,9 +34,7 @@
       <div id="iframe-container">
         <iframe
           src="about:blank"
-          frameborder="0"
           id="my-iframe"
-          scrolling="yes"
         >
         </iframe>
       </div>

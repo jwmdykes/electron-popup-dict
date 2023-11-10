@@ -21,7 +21,7 @@ const InjectCSS = () => {
     }
 
     div#content {
-        padding: 0px
+        padding: 0;
     }
 
     .component_keyword {
@@ -54,7 +54,7 @@ const IFrameOnLoad = () => {
   let myiframe = document.getElementById('my-iframe');
   myiframe.contentWindow.addEventListener(
     'DOMContentLoaded',
-    (e) => {
+    () => {
       InjectCSS();
     },
     true
@@ -84,7 +84,7 @@ const changeIframe = (text, url) => {
   ifrm.setAttribute('scrolling', 'yes');
 
   // remove existing iframe
-  myiframe = document.getElementById('my-iframe');
+  const myiframe = document.getElementById('my-iframe');
   myiframe.remove();
 
   // add new iframe to dom
@@ -92,7 +92,7 @@ const changeIframe = (text, url) => {
   ifrmContainer.appendChild(ifrm);
   ifrm.contentWindow.addEventListener(
     'DOMContentLoaded',
-    (e) => {
+    () => {
       InjectCSS();
     },
     true
@@ -103,7 +103,7 @@ ipcRenderer.on('change-iframe', (event, store) => {
   changeIframe(store.text, store.url);
 });
 
-ipcRenderer.on('focus-search', (event, store) => {
+ipcRenderer.on('focus-search', () => {
   const searchBarText = document.getElementById('SearchBarText');
   searchBarText.value = '';
   searchBarText.focus();

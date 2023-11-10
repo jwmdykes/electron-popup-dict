@@ -1,4 +1,12 @@
-// show window helper to fix windows 10 issues with focus
+// show window helper to fix Windows 10 issues with focus
+const { screen } = require('electron')
+
+function getMousePos() {
+  let mousePos = screen.getCursorScreenPoint();
+  console.log(`mouse position: ${JSON.stringify(mousePos)}`)
+  return mousePos
+}
+
 const showWindow = (win, app) => {
   win.show();
   win.setAlwaysOnTop(true);
@@ -16,25 +24,21 @@ const showWindow = (win, app) => {
 };
 
 const clickInBound = (point, bounds) => {
-  if (
+  return (
     point.x >= bounds.x &&
     point.x <= bounds.x + bounds.width &&
     point.y >= bounds.y &&
     point.y <= bounds.y + bounds.height
-  ) {
-    return true;
-  } else {
-    return false;
-  }
+  )
 };
 
 // get actual position of window from mouse position (uses size of window and monitor information to calculate appropriate position)
 const getWindowPosition = (mousePos, bounds, window) => {
-  x = mousePos.x;
-  y = mousePos.y;
+  let x = mousePos.x;
+  let y = mousePos.y;
 
   let cur_mon;
-  for (const [key, value] of Object.entries(bounds)) {
+  for (const [value] of Object.entries(bounds)) {
     if (value.x <= x && x <= value.x1 && value.y <= y && y <= value.y1) {
       cur_mon = value;
       break;
@@ -59,8 +63,18 @@ const getWindowPosition = (mousePos, bounds, window) => {
   return { x: x, y: y };
 };
 
+const changeIFrameURL = (win, text) => {
+  win.webContents.send('change-iframe', {
+    url: `https://ko.dict.naver.com/search.nhn?query=<<word>>&target=dic`,
+    text: text,
+  });
+}
+
 module.exports = {
   getWindowPosition: getWindowPosition,
   showWindow: showWindow,
   clickInBound: clickInBound,
+  getMousePos: getMousePos,
+  changeIFrameURL: changeIFrameURL,
+
 };

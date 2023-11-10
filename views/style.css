@@ -36,7 +36,6 @@ iframe {
     outline: none;
     width: 40px;
     cursor: pointer;
-    background-image: transparent url(./naver/1024px-Search_Icon.svg.png) no-repeat top;
 }
 
 #search-container>button:hover {

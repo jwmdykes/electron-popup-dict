@@ -1,6 +1,6 @@
 const { globalShortcut } = require('electron');
 const { query } = require('./dict-query');
-const { setMouseClickCallback, getMousePos } = require('./python-shell');
+const { getMousePos } = require('./utils')
 
 const registerHotkeys = (win, app) => {
   globalShortcut.register('esc', () => {
@@ -13,6 +13,10 @@ const registerHotkeys = (win, app) => {
     query(win, app);
     win.webContents.send('focus-search');
   });
+
+  globalShortcut.register('CommandOrControl+T', () => {
+    getMousePos();
+  })
 
   // setMouseClickCallback(() => {
   //   query(win, app);

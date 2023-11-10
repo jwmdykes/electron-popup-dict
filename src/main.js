@@ -30,7 +30,7 @@ const createWindow = () => {
   win.openDevTools({ mode: 'undocked' });
   win.hide();
 
-  // settup callbacks hooks from python
+  // setup callbacks hooks from python
   setupPythonShellCallbacks(win, app);
 
   // hide window when it goes out of focus
@@ -42,7 +42,7 @@ const createWindow = () => {
   return win;
 };
 
-// allow cross origin javascript so we can insert css into the iframe of the dictionary
+// allow cross-origin javascript, so we can insert css into the iframe of the dictionary
 app.commandLine.appendSwitch('disable-site-isolation-trials');
 
 app
@@ -54,7 +54,7 @@ app
     registerHotkeys(win, app);
   });
 
-// for macos, don't close the app when the last window is closed
+// for macOS, don't close the app when the last window is closed
 app.on('activate', () => {
   if (BrowserWindow.getAllWindows().length === 0) createWindow();
 });

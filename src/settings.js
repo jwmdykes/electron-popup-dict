@@ -1,8 +1,8 @@
+const {screen} = require('electron')
+
 getMonitors = (app) => {
   return app.whenReady().then(() => {
-    const { screen } = require('electron');
-    const displays = screen.getAllDisplays();
-    return displays;
+    return screen.getAllDisplays();
   });
 };
 
