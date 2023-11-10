@@ -2,21 +2,18 @@ html, body {
     width: 100%;
     height: 100%;
     margin: 0;
-    padding: 0;
-    background-color: #072c86;
+    background-color: azure;
     overflow: hidden;
 }
 
 iframe {
     width: 100%;
     height: 100%;
-    border: none;
-    background-color: #1d1d25;
 }
 
 .container {
     width: 100%;
-    height: 100%;
+    height: 100%
 }
 
 #iframe-container {
@@ -28,9 +25,8 @@ iframe {
     height: 30px;
     display: flex;
     align-items: stretch;
-    padding: 8px;
+    margin: 6px 6px 6px 6px;
     gap: 6px;
-    filter: drop-shadow(6px 3px 5px #000000);
 }
 
 #search-container>button {
@@ -38,17 +34,12 @@ iframe {
     border: 3px solid #c2cff1;
     border-radius: 5px 5px 5px 5px;
     outline: none;
-    height: 100%;
-    width: 35px;
+    width: 40px;
     cursor: pointer;
-    filter: none;
-    /*background: url(naver/search-icon.png) no-repeat;*/
-    background: url("naver/search-icon.png") no-repeat;
 }
 
 #search-container>button:hover {
-    border: 3px solid #7393e4;
-    filter: none;
+    border: 3px solid #7393e4
 }
 
 #search-container>input {
