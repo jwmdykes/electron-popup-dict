@@ -1,6 +1,6 @@
-const { getMousePos, getText } = require('./python-shell');
+const { getText } = require('./python-shell');
 
-const query = (win, app) => {
+const query = () => {
   console.log('QUERYING');
   getText(); // callback is already setup
 };

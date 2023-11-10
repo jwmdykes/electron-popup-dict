@@ -11,13 +11,13 @@ const showWindow = (win, app) => {
   win.show();
   win.setAlwaysOnTop(true);
   if (win.isMaximized) {
-    win.mainWindow?.maximize();
+    win.maximize();
   } else {
-    win.mainWindow?.showInactive();
+    win.showInactive()
   }
 
-  win.mainWindow?.setAlwaysOnTop(false);
-  win.mainWindow?.focus();
+  win.setAlwaysOnTop(false)
+  win.focus();
   app.focus({
     steal: true,
   });

@@ -1,8 +1,8 @@
 const { contextBridge, ipcRenderer } = require('electron');
 
 const InjectCSS = () => {
-  let myiframe = document.getElementById('my-iframe');
-  let head = myiframe.contentWindow.document.head;
+  let iframe = document.getElementById('my-iframe');
+  let head = iframe.contentWindow.document.head;
   head.innerHTML += `<style>
     div.option_area, div#header, div#footer, div#aside, div.component_socialplugin, div.tab_scroll_inner, div.section_suggestion, .section.section_etc{
         display: none;
@@ -51,8 +51,8 @@ const InjectCSS = () => {
 
 // Inject CSS on DOMContentLoaded of iframe.
 const IFrameOnLoad = () => {
-  let myiframe = document.getElementById('my-iframe');
-  myiframe.contentWindow.addEventListener(
+  let iframe = document.getElementById('my-iframe');
+  iframe.contentWindow.addEventListener(
     'DOMContentLoaded',
     () => {
       InjectCSS();
@@ -77,20 +77,18 @@ const changeIframe = (text, url) => {
   url = url.replace('<<word>>', text);
 
   // create new iframe
-  const ifrm = document.createElement('iframe');
-  ifrm.setAttribute('src', url);
-  ifrm.setAttribute('frameborder', '0');
-  ifrm.setAttribute('id', 'my-iframe');
-  ifrm.setAttribute('scrolling', 'yes');
+  const new_iframe = document.createElement('iframe');
+  new_iframe.setAttribute('src', url);
+  new_iframe.setAttribute('id', 'my-iframe');
 
   // remove existing iframe
-  const myiframe = document.getElementById('my-iframe');
-  myiframe.remove();
+  const old_iframe = document.getElementById('my-iframe');
+  old_iframe.remove();
 
   // add new iframe to dom
-  const ifrmContainer = document.getElementById('iframe-container');
-  ifrmContainer.appendChild(ifrm);
-  ifrm.contentWindow.addEventListener(
+  const iframeContainer = document.getElementById('iframe-container');
+  iframeContainer.appendChild(new_iframe);
+  new_iframe.contentWindow.addEventListener(
     'DOMContentLoaded',
     () => {
       InjectCSS();

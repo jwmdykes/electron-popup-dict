@@ -4,15 +4,8 @@ const { PythonShell } = require('python-shell');
 const path = require('path');
 
 const textShell = new PythonShell(path.join(__dirname, 'py/getText.py'));
-const mouseClickShell = new PythonShell(
-  path.join(__dirname, 'py/sendMouseClick.py')
-);
 
 textShell.on('stderr', function (stderr) {
-  console.error(stderr);
-});
-
-mouseClickShell.on('stderr', function (stderr) {
   console.error(stderr);
 });
 
@@ -28,17 +21,6 @@ const setTextCallback = (callback) => {
 const getText = () => {
   console.log("Trying to get text!");
   textShell.send('getText');
-};
-
-let currentMouseClickCallback = () => {};
-const setMouseClickCallback = (callback) => {
-  currentMouseClickCallback = callback;
-
-  mouseClickShell.send('go');
-
-  mouseClickShell.on('message', () => {
-    callback();
-  });
 };
 
 const defaultTextCallback = async (win, app, text) => {
@@ -87,6 +69,5 @@ const setupPythonShellCallbacks = (win, app) => {
 module.exports = {
   getMousePos: getMousePos,
   getText: getText,
-  setMouseClickCallback: setMouseClickCallback,
   setupPythonShellCallbacks: setupPythonShellCallbacks,
 };

@@ -16,7 +16,7 @@ const settings = require('./settings');
 const { registerHotkeys } = require('./hotkeys.js');
 const { setupPythonShellCallbacks } = require('./python-shell');
 
-const createWindow = () => {
+const createWindow = async () => {
   const win = new BrowserWindow({
     width: settings.windowSize.width,
     height: settings.windowSize.height,
@@ -38,8 +38,7 @@ const createWindow = () => {
     win.hide();
   });
 
-  win.loadFile(path.join(__dirname, '../views/naver/index.html'));
-  return win;
+  await win.loadFile(path.join(__dirname, '../views/naver/index.html'));
 };
 
 // allow cross-origin javascript, so we can insert css into the iframe of the dictionary
@@ -55,8 +54,8 @@ app
   });
 
 // for macOS, don't close the app when the last window is closed
-app.on('activate', () => {
-  if (BrowserWindow.getAllWindows().length === 0) createWindow();
+app.on('activate', async () => {
+  if (BrowserWindow.getAllWindows().length === 0) await createWindow();
 });
 
 app.on('window-all-closed', () => {
