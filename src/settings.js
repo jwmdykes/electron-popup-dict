@@ -1,3 +1,4 @@
+// noinspection SpellCheckingInspection
 const naverKoreanDict = {
   queryURL:'https://ko.dict.naver.com/search.nhn?query=<<word>>&target=dic',
   css:  `<style>
@@ -46,11 +47,19 @@ const naverKoreanDict = {
     `
 }
 
+const oxfordOnlineDictionary = {
+  queryURL: 'https://www.collinsdictionary.com/dictionary/english/<<word>>',
+  css: ``
+}
+
+const activeDictionary = naverKoreanDict
+
 module.exports = {
   windowSize: {
     width: 500,
     height: 550,
   },
-  queryURL: naverKoreanDict.queryURL,
-  css: naverKoreanDict.css,
+  queryURL: activeDictionary.queryURL,
+  css: activeDictionary.css,
+  backgroundColor: "#2e2e36",
 };

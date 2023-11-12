@@ -1,11 +1,10 @@
 // show window helper to fix Windows 10 issues with focus
-const { screen, clipboard } = require('electron')
+const { screen, clipboard, globalShortcut} = require('electron')
 const {windowSize} = require("./settings");
+const settings = require("./settings");
 
 function getMousePos() {
-  let mousePos = screen.getCursorScreenPoint();
-  console.log(`mouse position: ${JSON.stringify(mousePos)}`)
-  return mousePos
+  return screen.getCursorScreenPoint()
 }
 
 const showWindow = (win, app) => {
@@ -60,12 +59,6 @@ const getSelectedText = () => {
   return clipboard.readText('selection');
 }
 
-const changeIFrameURL = (win, text) => {
-  win.webContents.send('change-iframe', {
-    text: text,
-  });
-}
-
 getMonitors = (app) => {
   return app.whenReady().then(() => {
     return screen.getAllDisplays();
@@ -87,19 +80,47 @@ const MoveWindowToCursor = async (win, app, mousePos) => {
   win.setPosition(winPos.x, winPos.y);
 }
 
-const dictQuery = async (win, app, text) => {
+const dictQuery = async (win, browserView, app, text) => {
   const mousePos = getMousePos()
-
-  if (text !== '') {
-    changeIFrameURL(win, text)
-  }
-
   await MoveWindowToCursor(win, app, mousePos)
   showWindow(win, app)
+
+  if (text !== '') {
+    await changeWebView(win, browserView, text)
+  }
 };
 
+const registerHotkeys = (win, browserView, app) => {
+  globalShortcut.register('CommandOrControl+D', async () => {
+    const selectedText = getSelectedText();
+    console.log(selectedText)
+    await dictQuery(win, browserView, app, selectedText);
+    win.webContents.send('focus-search');
+  });
+
+  globalShortcut.register('CommandOrControl+T', () => {
+    const selectedText = getSelectedText();
+    console.log(`selected text: ${selectedText}`);
+  })
+};
+
+const changeWebView = async (win, browserView, text) => {
+  // win.removeBrowserView(browserView)
+
+  let url = settings.queryURL;
+  text = encodeURIComponent(text);
+  url = url.replace('<<word>>', text);
+
+  await browserView.webContents.loadURL(url);
+
+  // await browserView.webContents.executeJavaScript(`
+  //     document.head.innerHTML += \`${settings.css}\`
+  //   `);
+
+  // win.addBrowserView(browserView)
+}
 
 module.exports = {
-    getSelectedText: getSelectedText,
-    dictQuery: dictQuery,
+    registerHotkeys: registerHotkeys,
+    changeWebView: changeWebView,
 };
