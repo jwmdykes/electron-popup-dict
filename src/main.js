@@ -32,15 +32,14 @@ const createWindow = async () => {
     browserView = new BrowserView({
         webPreferences: {
             preload: path.join(__dirname, 'browserViewPreload.js'),
-            additionalArguments: ['testing']
         }
     });
     browserView.setBackgroundColor(settings.backgroundColor)
-    browserView.webContents.openDevTools()
+    // browserView.webContents.openDevTools()
     browserView.setBounds({x: 0, y: 45, width: settings.windowSize.width, height: settings.windowSize.height - 45});
 
-    await browserView.webContents.loadURL(settings.queryURL);
-    await browserView.webContents.executeJavaScript(`document.head.innerHTML += \`${settings.css}\``);
+    await changeWebView(mainWindow, browserView, "hello");
+    // await browserView.webContents.executeJavaScript(`document.head.innerHTML += \`${settings.css}\``);
 
     mainWindow.setBrowserView(browserView);
     registerHotkeys(mainWindow, browserView, app);
@@ -49,7 +48,6 @@ const createWindow = async () => {
     ipcMain.handle('get-css', () => settings.css)
 
     ipcMain.handle('change-webview', async (event, text) => {
-
         await changeWebView(mainWindow, browserView, text);
     })
 

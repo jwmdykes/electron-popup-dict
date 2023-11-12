@@ -49,10 +49,22 @@ const naverKoreanDict = {
 
 const oxfordOnlineDictionary = {
   queryURL: 'https://www.collinsdictionary.com/dictionary/english/<<word>>',
-  css: ``
+  css: `<style>
+  header, div.topslot_container.dictionary_long, div.tabsNavigation, a.share-button.icon-Share, #stickyslot_container {
+    display: none !important;
+  }
+  main {
+    padding: 0 !important;
+  }
+  </style>`
 }
 
-const activeDictionary = naverKoreanDict
+const googleTranslateEnglishKorean = {
+  queryURL: "https://translate.google.com/?sl=en&tl=ko&text=<<word>>&op=translate",
+  css: ``,
+}
+
+const activeDictionary = googleTranslateEnglishKorean;
 
 module.exports = {
   windowSize: {
