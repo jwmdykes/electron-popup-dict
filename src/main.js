@@ -48,8 +48,9 @@ const createWindow = async () => {
     ipcMain.handle('get-settings', () => settings)
     ipcMain.handle('get-css', () => settings.css)
 
-    ipcMain.handle('change-webview', async (event, store) => {
-        await changeWebView(browserView, store.text);
+    ipcMain.handle('change-webview', async (event, text) => {
+
+        await changeWebView(mainWindow, browserView, text);
     })
 
     return mainWindow;

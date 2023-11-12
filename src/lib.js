@@ -105,19 +105,11 @@ const registerHotkeys = (win, browserView, app) => {
 };
 
 const changeWebView = async (win, browserView, text) => {
-  // win.removeBrowserView(browserView)
-
   let url = settings.queryURL;
   text = encodeURIComponent(text);
   url = url.replace('<<word>>', text);
 
   await browserView.webContents.loadURL(url);
-
-  // await browserView.webContents.executeJavaScript(`
-  //     document.head.innerHTML += \`${settings.css}\`
-  //   `);
-
-  // win.addBrowserView(browserView)
 }
 
 module.exports = {
