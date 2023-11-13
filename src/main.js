@@ -38,20 +38,13 @@ const createWindow = async () => {
     // browserView.webContents.openDevTools()
     browserView.setBounds({x: 0, y: 45, width: settings.windowSize.width, height: settings.windowSize.height - 45});
 
-    await changeWebView(mainWindow, browserView, "hello");
-    // await browserView.webContents.executeJavaScript(`document.head.innerHTML += \`${settings.css}\``);
-
     mainWindow.setBrowserView(browserView);
     registerHotkeys(mainWindow, browserView, app);
 
-    ipcMain.handle('get-settings', () => settings)
     ipcMain.handle('get-css', () => settings.css)
-
     ipcMain.handle('change-webview', async (event, text) => {
         await changeWebView(mainWindow, browserView, text);
     })
-
-    return mainWindow;
 };
 
 

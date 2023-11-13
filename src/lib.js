@@ -82,29 +82,24 @@ const MoveWindowToCursor = async (win, app, mousePos) => {
 
 const dictQuery = async (win, browserView, app, text) => {
   const mousePos = getMousePos()
-  await MoveWindowToCursor(win, app, mousePos)
   showWindow(win, app)
 
-  if (text !== '') {
-    await changeWebView(win, browserView, text)
-  }
+  await Promise.all([
+    MoveWindowToCursor(win, app, mousePos),
+    changeWebView(win, browserView, text)
+  ])
 };
 
 const registerHotkeys = (win, browserView, app) => {
-  globalShortcut.register('CommandOrControl+D', async () => {
+  globalShortcut.register(settings.dictionaryHotkey, async () => {
     const selectedText = getSelectedText();
-    console.log(selectedText)
     await dictQuery(win, browserView, app, selectedText);
     win.webContents.send('focus-search');
   });
-
-  globalShortcut.register('CommandOrControl+T', () => {
-    const selectedText = getSelectedText();
-    console.log(`selected text: ${selectedText}`);
-  })
 };
 
 const changeWebView = async (win, browserView, text) => {
+  console.log(text)
   let url = settings.queryURL;
   text = encodeURIComponent(text);
   url = url.replace('<<word>>', text);
